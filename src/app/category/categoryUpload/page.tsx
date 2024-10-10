@@ -11,7 +11,7 @@ export default function page() {
     const [category, setCategory] = useState<string>();
     const [itemImage, setItemImage] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);
-
+    const [errorMsg, setErrorMsg] = useState("");
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         transformFile(file);
@@ -37,8 +37,8 @@ export default function page() {
             });
             alert("upload success");
             redirect("/category");
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            setErrorMsg(error?.response?.data.message);
         } finally {
             setLoading(false);
         }
@@ -47,6 +47,7 @@ export default function page() {
         <>
             <form className="mx-4 " onSubmit={handleSubmit}>
                 <h1 className="font-bold my-4">Upload Category</h1>
+                <h1 className="text-red-500">{errorMsg && errorMsg}</h1>
                 <Input
                     placeholder="Enter category"
                     className="  md:w-[50%] py-6"

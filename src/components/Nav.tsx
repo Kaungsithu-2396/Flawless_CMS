@@ -6,7 +6,7 @@ export default function Nav() {
     return (
         <>
             <nav className="flex cursor-pointer justify-center items-center pt-3">
-                <Link href={"/"}>
+                <Link href={"/dashboard"}>
                     <Image
                         src={"/flawlesslogo.png"}
                         width={200}
