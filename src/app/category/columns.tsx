@@ -29,9 +29,13 @@ export type Order = {
     _id: string;
     name: string;
 };
-const handleDelete = async (id: string) => {
+const handleDelete = async (id: string, token: string) => {
     try {
-        const resp = await axios.delete(`${baseURL}/api/category/${id}`);
+        const resp = await axios.delete(`${baseURL}/api/category/${id}`, {
+            headers: {
+                Authorization: ` Bearer ${token}`,
+            },
+        });
         console.log(resp);
         alert("delete success");
     } catch (error: any) {
@@ -53,11 +57,12 @@ export const columns: ColumnDef<Order>[] = [
 
     {
         id: "actions",
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const {
                 original: { _id },
             } = row;
-
+            //@ts-ignore
+            const token = table?.options.meta?.token;
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -101,7 +106,9 @@ export const columns: ColumnDef<Order>[] = [
                                             Cancel
                                         </AlertDialogCancel>
                                         <AlertDialogAction
-                                            onClick={() => handleDelete(_id)}
+                                            onClick={() =>
+                                                handleDelete(_id, token)
+                                            }
                                         >
                                             Continue
                                         </AlertDialogAction>

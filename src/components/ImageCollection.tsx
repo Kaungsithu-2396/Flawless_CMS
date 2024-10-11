@@ -6,7 +6,11 @@ import ImageDisplay from "./ImageDisplay";
 import { baseURL } from "../../baseURL";
 import axios from "axios";
 
-export default function ImageCollection() {
+export default function ImageCollection({
+    token,
+}: {
+    token: string | undefined;
+}) {
     const [images, setImages] = useState([]);
     async function getAllHomePageImages() {
         try {
@@ -23,7 +27,7 @@ export default function ImageCollection() {
     return (
         <section className="flex md:flex-row flex-col gap-5 my-8">
             {images.map((el: any) => {
-                return <ImageDisplay image={el} id={el._id} />;
+                return <ImageDisplay image={el} id={el._id} token={token} />;
             })}
         </section>
     );

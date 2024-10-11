@@ -5,16 +5,23 @@ import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import Link from "next/link";
 import axios from "axios";
-import { baseURL } from "../../../../../baseURL";
+import { cookies } from "next/headers";
 export default async function page({
     params: { categoryId },
 }: {
     params: { categoryId: number };
 }) {
+    const cookie = cookies();
+    const token = cookie.get("token")?.value;
     async function getData() {
         try {
             const resp = await axios.get(
-                `${baseURL}/api/subCategory/${categoryId}`
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/subCategory/${categoryId}`,
+                {
+                    headers: {
+                        Authorization: ` Bearer ${token}`,
+                    },
+                }
             );
             return resp.data.data;
         } catch (error) {
@@ -22,7 +29,14 @@ export default async function page({
         }
     }
     async function getCategoryById() {
-        const resp = await axios.get(`${baseURL}/api/category/${categoryId}`);
+        const resp = await axios.get(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/category/${categoryId}`,
+            {
+                headers: {
+                    Authorization: ` Bearer ${token}`,
+                },
+            }
+        );
 
         if (resp.statusText === "OK") {
             return resp.data.data;
@@ -54,7 +68,7 @@ export default async function page({
                         </Link>
                     </h1>
                 </span>
-                <DataTable columns={columns} data={data} />
+                <DataTable columns={columns} data={data} token={token} />
             </section>
         </>
     );

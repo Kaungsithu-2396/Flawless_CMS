@@ -32,7 +32,12 @@ export default function page() {
     };
     return (
         <section className="absolute top-[40%] md:relative md:flex md:justify-center md:items-center xl:h-[70vh] md:h-screen mx-6">
-            <form action="" method="post" onSubmit={handleSubmit}>
+            <form
+                action=""
+                method="post"
+                className="  px-5 py-4 rounded-md"
+                onSubmit={handleSubmit}
+            >
                 <span className="flex justify-center items-center my-5">
                     <label htmlFor="email" className="text-center  font-bold ">
                         LOGIN
@@ -42,8 +47,9 @@ export default function page() {
                 <Input
                     placeholder="Email"
                     type="email"
-                    size={70}
+                    size={50}
                     id="email"
+                    className="py-7"
                     onChange={(e) => {
                         setEmail(e.target.value);
                         setError("");
@@ -52,16 +58,16 @@ export default function page() {
                 <Input
                     placeholder="password"
                     type="password"
-                    className="my-4"
-                    size={70}
+                    className="my-4 py-7"
+                    size={50}
                     onChange={(e) => {
                         setPassword(e.target.value);
                         setError("");
                     }}
                 />
 
-                <span className="flex justify-center items-center">
-                    <Button type="submit" className="text-center ">
+                <span className="w-full">
+                    <Button type="submit" className="text-center w-full ">
                         {loading ? "loading..." : "Log In"}
                     </Button>
                 </span>

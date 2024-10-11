@@ -8,6 +8,7 @@ type props = {
         };
     };
     id: string;
+    token: string | undefined;
 };
 import React from "react";
 import { useState } from "react";
@@ -15,11 +16,14 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { baseURL } from "../../baseURL";
-export default function ImageDisplay({ image, id }: props) {
+export default function ImageDisplay({ image, id, token }: props) {
     const deleteHandler = async (_id: string, publicID: string) => {
         try {
-            const delResp = await axios.delete(`${baseURL}/api/home/${_id}`);
-            console.log(delResp);
+            const delResp = await axios.delete(`${baseURL}/api/home/${_id}`, {
+                headers: {
+                    Authorization: ` Bearer ${token}`,
+                },
+            });
             alert("Delete success");
         } catch (error) {
             console.log(error);

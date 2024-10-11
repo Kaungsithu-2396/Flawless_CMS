@@ -20,9 +20,13 @@ export type Order = {
     name: string;
 };
 
-const handleDelete = async (id: any) => {
+const handleDelete = async (id: string, token: string) => {
     try {
-        await axios.delete(`${baseURL}/api/subCategory/${id}`);
+        await axios.delete(`${baseURL}/api/subCategory/${id}`, {
+            headers: {
+                Authorization: ` Bearer ${token}`,
+            },
+        });
         alert("delete success");
     } catch (error) {
         console.log(error);
@@ -35,10 +39,12 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const {
                 original: { _id },
             } = row;
+            //@ts-ignore
+            const token = table?.options?.meta?.token;
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -54,7 +60,9 @@ export const columns: ColumnDef<Order>[] = [
                             <DropdownMenuItem>Update</DropdownMenuItem>
                         </Link>
 
-                        <DropdownMenuItem onClick={() => handleDelete(_id)}>
+                        <DropdownMenuItem
+                            onClick={() => handleDelete(_id, token)}
+                        >
                             Delete
                         </DropdownMenuItem>
                     </DropdownMenuContent>

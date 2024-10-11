@@ -4,10 +4,10 @@ import { FaPlus } from "react-icons/fa";
 import { DataTable } from "./data-table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import axios from "axios";
 import { baseURL } from "../../../baseURL";
 export default async function page() {
-   
     async function getProducts() {
         try {
             const productResp = await axios.get(`${baseURL}/api/product`);
@@ -18,7 +18,8 @@ export default async function page() {
     }
 
     const data = (await getProducts()) || [];
-    console.log(data);
+    const token = cookies().get("token");
+    console.log(token);
     return (
         <div className="my-8">
             <Link href="/product/upload">
@@ -32,7 +33,7 @@ export default async function page() {
                 </Button>
             </Link>
 
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data} token={token} />
         </div>
     );
 }

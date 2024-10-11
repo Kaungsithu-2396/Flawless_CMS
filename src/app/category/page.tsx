@@ -1,28 +1,25 @@
-"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { baseURL } from "../../../baseURL";
-import React, { useEffect, useState } from "react";
 import { Order, columns } from "./columns";
 import { FaPlus } from "react-icons/fa";
 import { DataTable } from "./data-table";
 import axios from "axios";
-export default function page() {
-    const [data, setData] = useState([]);
+import { cookies } from "next/headers";
+export default async function page() {
     async function getCategory() {
-        const resp = await axios.get(`${baseURL}/api/category`);
-       
-        if (resp.statusText === "OK") {
-            setData(resp.data.data);
-        } else {
-            return ["No subcategory"];
+        try {
+            const resp = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/category`
+            );
+            return resp.data.data;
+        } catch (error) {
+            console.log(error);
         }
     }
-    useEffect(() => {
-        getCategory();
-    }, []);
-
-    console.log("data", data);
+    const data = await getCategory();
+    const cookie = cookies();
+    const token: string | undefined = cookie.get("token")?.value;
     return (
         <section className="mx-4 ">
             <div className=" flex justify-between">
@@ -38,7 +35,7 @@ export default function page() {
                     </Button>
                 </Link>
             </div>
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data} token={token} />
         </section>
     );
 }

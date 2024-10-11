@@ -9,6 +9,7 @@ import {
     ColumnFiltersState,
     getFilteredRowModel,
 } from "@tanstack/react-table";
+import { useCookies } from "next-client-cookies";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,17 +24,27 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    token?: {
+        name: string;
+        value: string;
+    };
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    token,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
+
     const table = useReactTable({
         data,
         columns,
+        meta: {
+            token: token?.value,
+        },
+
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,
