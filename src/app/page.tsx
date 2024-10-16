@@ -22,6 +22,7 @@ export default function page() {
                     withCredentials: true,
                 }
             );
+            console.log(resp.data);
             router.push("/dashboard");
         } catch (error: any) {
             console.log(error);

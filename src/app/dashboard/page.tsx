@@ -4,28 +4,39 @@ import { Order, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { HiBellAlert } from "react-icons/hi2";
 import { cookies } from "next/headers";
-
+import axios from "axios";
 export default async function Home() {
     const token = cookies().get("token");
-    async function getData(): Promise<Order[]> {
-        // Fetch data from your API here.
-        return [
-            {
-                id: "728ed52f",
-                name: "Kaung Si Thu",
-                totalAmount: 100,
-                email: "m@example.com",
-            },
-            {
-                id: "728ed52g",
-                name: "Min Min Zaw",
-                totalAmount: 100,
-                email: "sithu@example.com",
-            },
-            // ...
-        ];
+    async function getAllOrders() {
+        try {
+            const resp = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order`
+            );
+            return resp.data.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
-    const data = await getData();
+    const data = await getAllOrders();
+    // async function getData(): Promise<Order[]> {
+    //     // Fetch data from your API here.
+    //     return [
+    //         {
+    //             id: "728ed52f",
+    //             name: "Kaung Si Thu",
+    //             totalAmount: 100,
+    //             email: "m@example.com",
+    //         },
+    //         {
+    //             id: "728ed52g",
+    //             name: "Min Min Zaw",
+    //             totalAmount: 100,
+    //             email: "sithu@example.com",
+    //         },
+    //         // ...
+    //     ];
+    // }
+
     return (
         <section className=" m-7 md:mt-7  md:w-2/3 md:m-auto flex flex-col  gap-6">
             <div className="flex lg:flex-row flex-col justify-between items-center gap-5 ">

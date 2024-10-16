@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 
 export function middleware(request: NextRequest) {
     const token = cookies().get("token");
+    console.log(request.headers, "Middleware token");
     const isOnLoginPage = request.nextUrl.pathname === "/";
     const isOnDashboardPage = request.nextUrl.pathname === "/dashboard";
 

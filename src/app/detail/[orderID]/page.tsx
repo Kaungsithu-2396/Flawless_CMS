@@ -1,10 +1,38 @@
 import React from "react";
 import Link from "next/link";
-export default function page({
+import axios from "axios";
+export default async function page({
     params: { orderID },
 }: {
     params: { orderID: string };
 }) {
+    async function getOrderDetail() {
+        try {
+            const resp = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order/${orderID}`
+            );
+            return resp.data.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const {
+        name,
+        email,
+        phone,
+        address,
+        zipCode,
+        InstallmentPlan,
+        lineId,
+        order,
+        message,
+    } = await getOrderDetail();
+    const orderItem = order.map((el: any) => el.price * el.count);
+
+    const total = orderItem.reduce((acc: any, val: any) => {
+        return acc + val;
+    }, 0);
+
     return (
         <>
             <div className="w-screen my-3 bg-[#353839] text-white p-5">
@@ -37,22 +65,34 @@ export default function page({
                             })}
                         </div>
                         <div className="font-bold">
-                            <p className=" my-9">Min Min Zaw</p>
-                            <p className=" my-9">mmz@gmail.com</p>
-                            <p className=" my-9">0634198213</p>
-                            <p className=" my-9">Yes</p>
+                            <p className=" my-9">{name}</p>
+                            <p className=" my-9">{email}</p>
+                            <p className=" my-9">{phone}</p>
+                            <p className=" my-9">
+                                {InstallmentPlan ? "yes" : "no"}
+                            </p>
 
-                            <p className=" my-9">10560</p>
-                            <p className=" my-9">@flawless</p>
-                            <p className=" my-9"> nothing</p>
+                            <p className=" my-9">{zipCode}</p>
+                            <p className=" my-9">{lineId}</p>
+                            <p className=" my-9">
+                                {" "}
+                                {message ? message : "nothing"}
+                            </p>
 
-                            <p className=" my-9 ">2000 B</p>
+                            <p className=" my-9 ">{total} B</p>
                             <p className="  md:my-9   ">
-                                Diamond Ring(1x8291), Golden Ring(2x9112)
+                                {order.map((el: any) => {
+                                    return (
+                                        <>
+                                            {el.name} ({el.productCode}) x{" "}
+                                            {el.count} ,<br />
+                                        </>
+                                    );
+                                })}
                             </p>
                             <p className=" my-9  md:w-full   overflow-scroll">
-                                119 Mahesak, Suriya Wong, Bang Rak, Bangkok
-                                10500
+                                {address}
+                                {zipCode}
                             </p>
                         </div>
                     </div>

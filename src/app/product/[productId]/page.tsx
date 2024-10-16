@@ -67,10 +67,6 @@ export default function page({
                                 </span>
                             </button>
                         </Link>
-
-                        <button className="px-8 py-3 hover:font-bold duration-200 delay-200 bg-black text-white rounded-md">
-                            Delete
-                        </button>
                     </span>
                 </div>
             </div>

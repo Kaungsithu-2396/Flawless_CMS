@@ -14,7 +14,7 @@ export default async function page() {
             console.log(error);
         }
     }
-    const data = await getData();
+    const data = (await getData()) || [];
     return (
         <section className="mx-4">
             <h1 className="text-3xl flex items-center gap-5">

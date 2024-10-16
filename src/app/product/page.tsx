@@ -19,7 +19,7 @@ export default async function page() {
 
     const data = (await getProducts()) || [];
     const token = cookies().get("token");
-    console.log(token);
+
     return (
         <div className="my-8">
             <Link href="/product/upload">

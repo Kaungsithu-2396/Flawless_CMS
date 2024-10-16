@@ -27,8 +27,9 @@ export default function UploadProduct({
     const [categoryData, setCategoryData] = useState<any>();
     const [subCategoryData, setsubCategoryData] = useState<any>();
     const [subCategory, setsubCategory] = useState([]);
+    const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
     const [category, setcategory] = useState<string>("");
-    const [images, setImages] = useState<string[]>([]);
+
     const [loading, setLoading] = useState<boolean>(false);
     async function getAllCategories() {
         try {
@@ -59,12 +60,6 @@ export default function UploadProduct({
         fileArray.forEach((file) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onloadend = () => {
-                setImages((prevImages) => [
-                    ...prevImages,
-                    reader.result as string,
-                ]);
-            };
         });
     };
     const data = categoryData || [];
@@ -103,25 +98,30 @@ export default function UploadProduct({
         return true;
     };
     const onSubmit: SubmitHandler<productForm> = async (data) => {
-        const dataToSubmit = {
-            ...data,
-            category,
-            subCategory,
-            productImage: images,
-        };
-        console.log(dataToSubmit, "submit");
+        const { name, description, price, productCode, stock, productImage } =
+            data;
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("price", String(price));
+        formData.append("productCode", productCode);
+        formData.append("stock", String(stock));
+        formData.append("category", category);
+        formData.append("subCategory", selectedSubCategory);
+        Array.from(productImage).forEach((el) => formData.append("images", el));
         setLoading(true);
         try {
             const uploadResp = await axios.post(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/product`,
-                dataToSubmit,
+                formData,
                 {
                     headers: {
+                        "Content-Type": "multipart/form-data",
                         Authorization: ` Bearer ${token}`,
                     },
                 }
             );
-
+            console.log(uploadResp.data.message);
             alert("upload succes");
         } catch (error) {
             console.log(error);
@@ -268,7 +268,9 @@ export default function UploadProduct({
                                     disabled={
                                         dropDownValue == "" ? true : false
                                     }
-                                    onValueChange={(data) => console.log(data)}
+                                    onValueChange={(data) =>
+                                        setSelectedSubCategory(data)
+                                    }
                                 >
                                     <SelectTrigger className="w-[180px]">
                                         <SelectValue placeholder="Select Category" />

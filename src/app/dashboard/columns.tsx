@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export type Order = {
-    id: string;
+    _id: string;
     name: string;
     email: string;
     totalAmount: number;
@@ -29,24 +29,12 @@ export const columns: ColumnDef<Order>[] = [
         accessorKey: "email",
         header: "Email",
     },
-    {
-        accessorKey: "totalAmount",
-        header: () => <div className="text-right">total</div>,
-        cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("totalAmount"));
-            const formatted = new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-            }).format(amount);
 
-            return <div className="text-right font-medium">{formatted}</div>;
-        },
-    },
     {
         id: "actions",
         cell: ({ row }) => {
             const {
-                original: { id },
+                original: { _id },
             } = row;
             return (
                 <DropdownMenu>
@@ -58,7 +46,7 @@ export const columns: ColumnDef<Order>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <Link href={`/detail/${id}`}>
+                        <Link href={`/detail/${_id}`}>
                             <DropdownMenuItem>View detail</DropdownMenuItem>
                         </Link>
                     </DropdownMenuContent>

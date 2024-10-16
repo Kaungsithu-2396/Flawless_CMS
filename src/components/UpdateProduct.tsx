@@ -27,6 +27,7 @@ export default function UpdateProduct({
     const [categoryData, setCategoryData] = useState<any>();
     const [subCategoryData, setsubCategoryData] = useState<any>();
     const [subCategory, setsubCategory] = useState([]);
+    const [subCatData, setSubCateData] = useState("");
     const [prevData, setPrevData] = useState<any>({});
     const [prevDataImage, setPrevDataImage] = useState<any>();
     const [category, setcategory] = useState<string>("");
@@ -118,26 +119,29 @@ export default function UpdateProduct({
     };
     const onSubmit: SubmitHandler<productForm> = async (data) => {
         const publicIDCol = prevDataImage.map((el: any) => el.publicID);
-        const imgArr = images.map((img, idx) => {
-            return {
-                image: img,
-            };
-        });
+        console.log(publicIDCol);
+        const { name, description, price, productCode, stock, productImage } =
+            data;
 
-        const dataToSubmit = {
-            ...data,
-            category,
-            subCategory,
-            productImages: imgArr,
-        };
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("price", String(price));
+        formData.append("productCode", productCode);
+        formData.append("stock", String(stock));
+        formData.append("category", category);
+        formData.append("subCategory", subCatData);
+        formData.append("publicID", JSON.stringify(publicIDCol));
+        Array.from(productImage).forEach((el) => formData.append("images", el));
 
         setLoading(true);
         try {
             const updateResp = await axios.patch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/product/${productID}`,
-                dataToSubmit,
+                formData,
                 {
                     headers: {
+                        "Content-Type": "multipart/form-data",
                         Authorization: ` Bearer ${token}`,
                     },
                 }
@@ -252,7 +256,9 @@ export default function UpdateProduct({
                                     disabled={
                                         dropDownValue == "" ? true : false
                                     }
-                                    onValueChange={(data) => console.log(data)}
+                                    onValueChange={(data) =>
+                                        setSubCateData(data)
+                                    }
                                 >
                                     <SelectTrigger className="w-[180px]">
                                         <SelectValue placeholder="Select Category" />

@@ -52,10 +52,14 @@ export default function HomePage({ token }: { token: string | undefined }) {
     };
     return (
         <>
+            <p className="my-4 text-zinc-400 ">
+                Suggested image size : 3936x2624
+            </p>
             <form
                 className=" my-5 flex md:flex-row flex-col justify-start items-start md:items-center gap-6 xl:w-[60%]"
                 onSubmit={handleSubmit}
             >
+                <br />
                 <span className="flex flex-col ">
                     <Input
                         type="file"

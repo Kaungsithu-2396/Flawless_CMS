@@ -4,8 +4,6 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { redirect } from "next/navigation";
-
 export default function UploadSubCategory({
     categoryID,
     token,
