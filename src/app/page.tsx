@@ -16,6 +16,7 @@ export default function page() {
 
         setLoading(true);
         try {
+            console.log("Base URL:", process.env.NEXT_PUBLIC_BASE_URL);
             const resp = await axios.post(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,
                 { email, password },

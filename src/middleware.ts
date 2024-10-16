@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export function middleware(request: NextRequest) {
     const token = cookies().get("token");
-    console.log(request.cookies);
+    console.log(request.headers, "cookies,");
     const isOnLoginPage = request.nextUrl.pathname === "/";
     const isOnDashboardPage = request.nextUrl.pathname === "/dashboard";
     if (!token && !isOnLoginPage) {
