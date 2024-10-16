@@ -27,7 +27,7 @@ export default function page() {
                     },
                 }
             );
-
+            console.log("success");
             router.push("/dashboard");
         } catch (error: any) {
             console.log(error);
