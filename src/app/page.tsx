@@ -13,6 +13,7 @@ export default function page() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = { email, password };
+
         setLoading(true);
         try {
             const resp = await axios.post(
@@ -20,9 +21,13 @@ export default function page() {
                 { email, password },
                 {
                     withCredentials: true,
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Content-Type": "application/json",
+                    },
                 }
             );
-            console.log(resp.data);
+
             router.push("/dashboard");
         } catch (error: any) {
             console.log(error);
@@ -50,6 +55,7 @@ export default function page() {
                     type="email"
                     size={50}
                     id="email"
+                    value={email}
                     className="py-7"
                     onChange={(e) => {
                         setEmail(e.target.value);
@@ -61,6 +67,7 @@ export default function page() {
                     type="password"
                     className="my-4 py-7"
                     size={50}
+                    value={password}
                     onChange={(e) => {
                         setPassword(e.target.value);
                         setError("");
