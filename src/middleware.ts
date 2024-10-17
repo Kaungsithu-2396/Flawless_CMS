@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
     const token = cookies().get("token");
     const isOnLoginPage = request.nextUrl.pathname === "/";
     const isOnDashboardPage = request.nextUrl.pathname === "/dashboard";
-    console.log(request.headers, "headers");
+    console.log(request.cookies, "cookies");
     if (!token && !isOnLoginPage) {
         return NextResponse.redirect(new URL("/", request.url));
     }

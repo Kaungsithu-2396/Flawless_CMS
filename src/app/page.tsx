@@ -13,7 +13,6 @@ export default function page() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = { email, password };
-
         setLoading(true);
         try {
             const resp = await axios.post(
@@ -22,8 +21,8 @@ export default function page() {
                 {
                     withCredentials: true,
                     headers: {
-                        "Access-Control-Allow-Origin": "*",
                         "Content-Type": "application/json",
+                        "Access-Control-Allow-Credentials": true,
                     },
                 }
             );
