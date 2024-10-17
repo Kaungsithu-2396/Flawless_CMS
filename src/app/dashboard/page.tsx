@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import axios from "axios";
 export default async function Home() {
     const token = cookies().get("token");
+    console.log(token, "token");
     async function getAllOrders() {
         try {
             const resp = await axios.get(
