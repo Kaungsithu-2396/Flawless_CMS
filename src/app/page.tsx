@@ -16,7 +16,6 @@ export default function page() {
 
         setLoading(true);
         try {
-            console.log("Base URL:", process.env.NEXT_PUBLIC_BASE_URL);
             const resp = await axios.post(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,
                 { email, password },
@@ -28,7 +27,7 @@ export default function page() {
                     },
                 }
             );
-            console.log("success");
+
             router.push("/dashboard");
         } catch (error: any) {
             console.log(error);
