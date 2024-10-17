@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import axios from "axios";
-import { baseURL } from "../../../baseURL";
 export default async function page() {
     async function getProducts() {
         try {
-            const productResp = await axios.get(`${baseURL}/api/product`);
+            const productResp = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/product`
+            );
             return productResp.data.data;
         } catch (error) {
             console.log(error);
@@ -19,7 +20,7 @@ export default async function page() {
 
     const data = (await getProducts()) || [];
     const token = cookies().get("token");
-
+    console.log("token");
     return (
         <div className="my-8">
             <Link href="/product/upload">

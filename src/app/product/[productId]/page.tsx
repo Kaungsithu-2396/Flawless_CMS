@@ -20,7 +20,7 @@ export default function page({
     async function getSepcificProduct() {
         try {
             const productResp = await axios.get(
-                `${baseURL}/api/product/${productId}`
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/product/${productId}`
             );
             console.log(productResp.data);
 

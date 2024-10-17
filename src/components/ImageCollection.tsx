@@ -14,7 +14,9 @@ export default function ImageCollection({
     const [images, setImages] = useState([]);
     async function getAllHomePageImages() {
         try {
-            const resp = await axios.get(`${baseURL}/api/home`);
+            const resp = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/home`
+            );
             setImages(resp.data.data);
         } catch (error) {
             console.log(error);
