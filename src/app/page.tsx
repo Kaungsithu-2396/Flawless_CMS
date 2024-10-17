@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+axios.defaults.withCredentials = true;
 export default function page() {
     const [email, setEmail] = useState("");
     const router = useRouter();
@@ -20,10 +21,6 @@ export default function page() {
                 { email, password },
                 {
                     withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Credentials": true,
-                    },
                 }
             );
 

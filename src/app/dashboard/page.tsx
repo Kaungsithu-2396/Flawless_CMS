@@ -3,11 +3,12 @@ import Link from "next/link";
 import { Order, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { HiBellAlert } from "react-icons/hi2";
+import nookies from "nookies";
 import { cookies } from "next/headers";
 import axios from "axios";
 export default async function Home() {
-    const token = cookies().get("token");
-    console.log(token, "token");
+    const cookie = cookies().get("token");
+    console.log(cookie, "token cookies");
     async function getAllOrders() {
         try {
             const resp = await axios.get(
@@ -19,24 +20,6 @@ export default async function Home() {
         }
     }
     const data = await getAllOrders();
-    // async function getData(): Promise<Order[]> {
-    //     // Fetch data from your API here.
-    //     return [
-    //         {
-    //             id: "728ed52f",
-    //             name: "Kaung Si Thu",
-    //             totalAmount: 100,
-    //             email: "m@example.com",
-    //         },
-    //         {
-    //             id: "728ed52g",
-    //             name: "Min Min Zaw",
-    //             totalAmount: 100,
-    //             email: "sithu@example.com",
-    //         },
-    //         // ...
-    //     ];
-    // }
 
     return (
         <section className=" m-7 md:mt-7  md:w-2/3 md:m-auto flex flex-col  gap-6">

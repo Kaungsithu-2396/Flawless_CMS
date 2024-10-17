@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 
 export function middleware(request: NextRequest) {
-    const token = cookies().get("token");
+    const token = getCookie("token");
     console.log(token, "token");
     const isOnLoginPage = request.nextUrl.pathname === "/";
     const isOnDashboardPage = request.nextUrl.pathname === "/dashboard";
