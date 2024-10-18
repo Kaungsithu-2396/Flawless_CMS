@@ -1,9 +1,12 @@
 "use client";
 import { createContext, useState, useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
+interface AuthContextType {
+    token: string | null; // or any type you expect
+    setToken: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
-// Create the AuthContext
-const AuthContext = createContext(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();

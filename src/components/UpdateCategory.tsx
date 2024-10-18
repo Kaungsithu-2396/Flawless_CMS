@@ -10,7 +10,7 @@ export default function UpdateCategory({
     token,
 }: {
     categoryID: string;
-    token: string | undefined;
+    token: string | null;
 }) {
     const [data, setData] = useState<any>({});
     const [itemImage, setItemImage] = useState<any>("");
