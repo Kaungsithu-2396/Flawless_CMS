@@ -1,26 +1,33 @@
-import Image from "next/image";
+"use client";
 import Link from "next/link";
 import { Order, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { HiBellAlert } from "react-icons/hi2";
-import nookies from "nookies";
+import { useRouter } from "next/navigation";
 import { cookies } from "next/headers";
 import axios from "axios";
-export default async function Home() {
-    const cookie = cookies().get("token");
-    console.log(cookie, "token cookies");
+import { useEffect, useState } from "react";
+export default function Home() {
+    const router = useRouter();
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.push("/");
+        }
+    }, []);
+    const [data, setData] = useState([]);
     async function getAllOrders() {
         try {
             const resp = await axios.get(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/order`
             );
-            return resp.data.data;
+            setData(resp.data.data);
         } catch (error) {
             console.log(error);
         }
     }
-    const data = await getAllOrders();
-
+    useEffect(() => {
+        getAllOrders();
+    }, []);
     return (
         <section className=" m-7 md:mt-7  md:w-2/3 md:m-auto flex flex-col  gap-6">
             <div className="flex lg:flex-row flex-col justify-between items-center gap-5 ">

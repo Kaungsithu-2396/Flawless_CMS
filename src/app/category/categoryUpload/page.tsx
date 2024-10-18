@@ -1,8 +1,16 @@
+"use client";
 import UploadCategory from "@/components/UploadCategory";
-import { cookies } from "next/headers";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+// import { cookies } from "next/headers";
 export default function page() {
-    const cookie = cookies();
-    const token = cookie.get("token")?.value;
+    const router = useRouter();
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    }, []);
     return (
         <>
             <UploadCategory token={token} />

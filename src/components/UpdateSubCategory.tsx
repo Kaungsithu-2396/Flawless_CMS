@@ -15,7 +15,7 @@ export default function UpdateSubCategory({
     token,
 }: {
     categoryID: number;
-    token: string | undefined;
+    token: string | null;
 }) {
     const [subCategory, setSubCategory] = useState("");
     const [prevData, setPrevData] = useState<subCategoryType>();

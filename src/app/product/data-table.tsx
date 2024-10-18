@@ -24,10 +24,7 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    token?: {
-        name: string;
-        value: string;
-    };
+    token: string | null;
 }
 
 export function DataTable<TData, TValue>({
@@ -42,7 +39,7 @@ export function DataTable<TData, TValue>({
         data,
         columns,
         meta: {
-            token: token?.value,
+            token,
         },
 
         getCoreRowModel: getCoreRowModel(),

@@ -1,18 +1,24 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "./data-table";
 import { Order, columns } from "./columns";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import Link from "next/link";
 import axios from "axios";
-import { cookies } from "next/headers";
-export default async function page({
+// import { cookies } from "next/headers";
+export default function page({
     params: { categoryId },
 }: {
     params: { categoryId: number };
 }) {
-    const cookie = cookies();
-    const token = cookie.get("token")?.value;
+    const [data, setData] = useState([]);
+    const [mainCategory, setMainCategory] = useState({ name: "" });
+    const router = useRouter();
+    // const cookie = cookies();
+    // const token = cookie.get("token")?.value;
+    const token = localStorage.getItem("token");
     async function getData() {
         try {
             const resp = await axios.get(
@@ -23,7 +29,7 @@ export default async function page({
                     },
                 }
             );
-            return resp.data.data;
+            setData(resp.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -39,13 +45,20 @@ export default async function page({
         );
 
         if (resp.statusText === "OK") {
-            return resp.data.data;
+            setMainCategory(resp.data.data);
         } else {
             return [];
         }
     }
-    const data = (await getData()) || [];
-    const mainCategory = await getCategoryById();
+    useEffect(() => {
+        getData();
+        getCategoryById();
+    }, []);
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    }, []);
 
     return (
         <>

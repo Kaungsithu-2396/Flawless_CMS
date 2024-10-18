@@ -1,25 +1,35 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { baseURL } from "../../../baseURL";
 import { Order, columns } from "./columns";
+import { useRouter } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
 import { DataTable } from "./data-table";
 import axios from "axios";
 import { cookies } from "next/headers";
-export default async function page() {
+import { useEffect, useState } from "react";
+export default function page() {
+    const [data, setData] = useState([]);
+    const router = useRouter();
     async function getCategory() {
         try {
             const resp = await axios.get(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/category`
             );
-            return resp.data.data;
+            setData(resp.data.data);
         } catch (error) {
             console.log(error);
         }
     }
-    const data = await getCategory();
-    const cookie = cookies();
-    const token: string | undefined = cookie.get("token")?.value;
+    useEffect(() => {
+        getCategory();
+    });
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    });
     return (
         <section className="mx-4 ">
             <div className=" flex justify-between">

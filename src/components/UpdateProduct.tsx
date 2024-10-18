@@ -20,7 +20,7 @@ export default function UpdateProduct({
     token,
 }: {
     productID: string;
-    token: string | undefined;
+    token: string | null;
 }) {
     const [dropDownValue, setDropDownValue] = useState<string>("");
     const [preview, setPreview] = useState<FileList | null>();
@@ -119,7 +119,6 @@ export default function UpdateProduct({
     };
     const onSubmit: SubmitHandler<productForm> = async (data) => {
         const publicIDCol = prevDataImage.map((el: any) => el.publicID);
-        console.log(publicIDCol);
         const { name, description, price, productCode, stock, productImage } =
             data;
 
@@ -146,8 +145,8 @@ export default function UpdateProduct({
                     },
                 }
             );
-            console.log(updateResp);
-            alert("upload succes");
+
+            alert("update succes");
         } catch (error) {
             console.log(error);
         } finally {
@@ -294,8 +293,8 @@ export default function UpdateProduct({
                                 ) => {
                                     //@ts-ignore
                                     const files = Array.from(e.target.files);
-                                    if (files.length > 6) {
-                                        alert("Image count must be under 6");
+                                    if (files.length > 3) {
+                                        alert("Image count must be under 3");
                                         //@ts-ignore
                                         setPreview([]);
                                     } else {

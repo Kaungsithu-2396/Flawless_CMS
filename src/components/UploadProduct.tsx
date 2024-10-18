@@ -17,11 +17,7 @@ import { Button } from "@/components/ui/button";
 import { productForm } from "../../types";
 import axios from "axios";
 
-export default function UploadProduct({
-    token,
-}: {
-    token: string | undefined;
-}) {
+export default function UploadProduct({ token }: { token: string | null }) {
     const [dropDownValue, setDropDownValue] = useState<string>("");
     const [preview, setPreview] = useState<FileList | null>();
     const [categoryData, setCategoryData] = useState<any>();

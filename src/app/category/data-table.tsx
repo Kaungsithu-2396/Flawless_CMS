@@ -23,7 +23,7 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    token: string | undefined;
+    token: string | null;
 }
 
 export function DataTable<TData, TValue>({

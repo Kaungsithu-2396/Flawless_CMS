@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 axios.defaults.withCredentials = true;
 export default function page() {
     const [email, setEmail] = useState("");
@@ -11,6 +11,11 @@ export default function page() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState("");
     const [password, setPassword] = useState("");
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            router.push("/dashboard");
+        }
+    }, []);
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = { email, password };
@@ -24,6 +29,7 @@ export default function page() {
                 }
             );
 
+            localStorage.setItem("token", resp.data.token);
             router.push("/dashboard");
         } catch (error: any) {
             console.log(error);

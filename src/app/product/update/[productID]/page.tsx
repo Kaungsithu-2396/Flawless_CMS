@@ -1,7 +1,6 @@
-import { cookies } from "next/headers";
-import UpdateProduct from "@/components/UpdateProduct";
-import ProductImage from "@/components/ProductImage";
+"use client";
 
+import UpdateProduct from "@/components/UpdateProduct";
 export default function page({
     params: { productID },
 }: {
@@ -9,8 +8,9 @@ export default function page({
         productID: string;
     };
 }) {
-    const cookie = cookies();
-    const token: string | undefined = cookie.get("token")?.value;
+    const token = localStorage.getItem("token");
+    // const cookie = cookies();
+    // const token: string | undefined = cookie.get("token")?.value;
     return (
         <>
             <UpdateProduct productID={productID} token={token} />

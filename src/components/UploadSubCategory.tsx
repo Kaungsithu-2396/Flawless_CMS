@@ -9,7 +9,7 @@ export default function UploadSubCategory({
     token,
 }: {
     categoryID: string;
-    token: string | undefined;
+    token: string | null;
 }) {
     const [name, setName] = useState("");
     const [error, setError] = useState("");
@@ -41,8 +41,8 @@ export default function UploadSubCategory({
     return (
         <>
             <h1 className="m-5">
-                Upload sub category of{" "}
-                <span className="font-bold text-xl">"Rings"</span>
+                Upload sub category
+                <span className="font-bold text-xl"></span>
             </h1>
             {error && <h1 className="  m-5  text-red-400 ">{error}</h1>}
             <form className="mx-4 " onSubmit={handleSubmit}>
