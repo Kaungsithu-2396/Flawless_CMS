@@ -2,21 +2,15 @@
 import UploadCategory from "@/components/UploadCategory";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../../../context/AuthContext";
 // import { cookies } from "next/headers";
 export default function page() {
-    const [token, setToken] = useState<string | null>("");
+    const { token } = useAuth();
     const router = useRouter();
-    useEffect(() => {
-        setToken(localStorage.getItem("token"));
-    });
-    useEffect(() => {
-        if (!token) {
-            router.push("/");
-        }
-    }, []);
+
     return (
         <>
-            <UploadCategory token={token} />
+            <UploadCategory token={token && token} />
         </>
     );
 }

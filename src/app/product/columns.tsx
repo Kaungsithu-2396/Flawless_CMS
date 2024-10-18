@@ -29,7 +29,9 @@ export type Order = {
     _id: string;
     name: string;
     productCode: string;
+    category: string;
     price: number;
+    subCategory: string;
 };
 
 const handleDelete = async (id: string, token: string) => {
@@ -56,6 +58,14 @@ export const columns: ColumnDef<Order>[] = [
     {
         accessorKey: "productCode",
         header: "Product Code",
+    },
+    {
+        accessorKey: "category",
+        header: "Category",
+    },
+    {
+        accessorKey: "subCategory",
+        header: "SubCategory",
     },
     {
         accessorKey: "price",

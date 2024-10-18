@@ -8,9 +8,10 @@ import { DataTable } from "./data-table";
 import axios from "axios";
 import { cookies } from "next/headers";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 export default function page() {
     const [data, setData] = useState([]);
-    const [token, setToken] = useState<string | null>("");
+    const { token } = useAuth();
     const router = useRouter();
     async function getCategory() {
         try {
@@ -22,18 +23,11 @@ export default function page() {
             console.log(error);
         }
     }
-    useEffect(() => {
-        setToken(localStorage.getItem("token"));
-    }, []);
+
     useEffect(() => {
         getCategory();
     }, []);
 
-    useEffect(() => {
-        if (!token) {
-            router.push("/");
-        }
-    }, []);
     return (
         <section className="mx-4 ">
             <div className=" flex justify-between">
@@ -49,7 +43,7 @@ export default function page() {
                     </Button>
                 </Link>
             </div>
-            <DataTable columns={columns} data={data} token={token} />
+            <DataTable columns={columns} data={data} token={token && token} />
         </section>
     );
 }

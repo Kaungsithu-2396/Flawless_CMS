@@ -28,8 +28,8 @@ const handleDelete = async (id: string, token: string) => {
             },
         });
         alert("delete success");
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        alert(error?.response?.data.message);
     }
 };
 export const columns: ColumnDef<Order>[] = [

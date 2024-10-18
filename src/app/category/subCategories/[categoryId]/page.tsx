@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import Link from "next/link";
 import axios from "axios";
+import { useAuth } from "../../../../../context/AuthContext";
 // import { cookies } from "next/headers";
 export default function page({
     params: { categoryId },
@@ -18,7 +19,7 @@ export default function page({
     const router = useRouter();
     // const cookie = cookies();
     // const token = cookie.get("token")?.value;
-    const token = localStorage.getItem("token");
+    const { token } = useAuth();
     async function getData() {
         try {
             const resp = await axios.get(
@@ -54,11 +55,6 @@ export default function page({
         getData();
         getCategoryById();
     }, []);
-    useEffect(() => {
-        if (!token) {
-            router.push("/");
-        }
-    }, []);
 
     return (
         <>
@@ -81,7 +77,11 @@ export default function page({
                         </Link>
                     </h1>
                 </span>
-                <DataTable columns={columns} data={data} token={token} />
+                <DataTable
+                    columns={columns}
+                    data={data}
+                    token={token && token}
+                />
             </section>
         </>
     );

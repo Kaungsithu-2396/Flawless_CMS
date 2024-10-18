@@ -2,6 +2,7 @@
 import UpdateSubCategory from "@/components/UpdateSubCategory";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../../../../../context/AuthContext";
 // import { cookies } from "next/headers";
 
 export default function page({
@@ -14,7 +15,7 @@ export default function page({
     // const cookie = cookies();
     // const token = cookie.get("token")?.value;
     const router = useRouter();
-    const token = localStorage.getItem("token");
+    const { token } = useAuth();
     useEffect(() => {
         if (!token) {
             router.push("/");
@@ -22,7 +23,7 @@ export default function page({
     }, []);
     return (
         <>
-            <UpdateSubCategory categoryID={categoryID} token={token} />
+            <UpdateSubCategory categoryID={categoryID} token={token && token} />
         </>
     );
 }

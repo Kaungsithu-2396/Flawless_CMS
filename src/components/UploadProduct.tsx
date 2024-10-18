@@ -62,12 +62,10 @@ export default function UploadProduct({ token }: { token: string | null }) {
     const dropDownHandler = async (value: string) => {
         setDropDownValue(value);
         const [id, category] = value.split(",");
-        console.log(id);
         setcategory(category);
 
         //@ts-ignore
         const SubCategory = subCategoryData || [];
-        console.log(SubCategory, "subcat");
         const selectedSubCategory = SubCategory?.filter(
             (el: any) => el.mainCategory === id
         );

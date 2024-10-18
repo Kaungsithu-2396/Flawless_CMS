@@ -1,16 +1,17 @@
+"use client";
 import UpdateCategory from "@/components/UpdateCategory";
-import { cookies } from "next/headers";
+
+import { useAuth } from "../../../../../context/AuthContext";
 type props = {
     params: {
         categoryID: string;
     };
 };
 export default function page({ params: { categoryID } }: props) {
-    const cookie = cookies();
-    const token = cookie.get("token")?.value;
+    const { token } = useAuth();
     return (
         <>
-            <UpdateCategory categoryID={categoryID} token={token} />
+            <UpdateCategory categoryID={categoryID} token={token && token} />
         </>
     );
 }

@@ -7,13 +7,12 @@ import { useRouter } from "next/navigation";
 import { cookies } from "next/headers";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 export default function Home() {
     const router = useRouter();
-    useEffect(() => {
-        if (!localStorage.getItem("token")) {
-            router.push("/");
-        }
-    }, []);
+    //@ts-ignore
+    const { token } = useAuth();
+
     const [data, setData] = useState([]);
     async function getAllOrders() {
         try {

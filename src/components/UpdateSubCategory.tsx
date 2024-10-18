@@ -29,6 +29,7 @@ export default function UpdateSubCategory({
                     },
                 }
             );
+
             setPrevData(resp.data.data);
         } catch (error) {
             console.log(error);
@@ -40,7 +41,7 @@ export default function UpdateSubCategory({
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
-            await axios.patch(
+            const resp = await axios.patch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/subCategory/${categoryID}`,
                 {
                     name: subCategory,
@@ -51,6 +52,7 @@ export default function UpdateSubCategory({
                     },
                 }
             );
+            console.log(resp);
             alert("update success");
         } catch (error) {
             console.log(error);

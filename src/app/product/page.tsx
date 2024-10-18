@@ -8,10 +8,12 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useAuth } from "../../../context/AuthContext";
 export default function page() {
     const [data, setData] = useState([]);
-    const [token, setToken] = useState<string | null>("");
-    const router = useRouter();
+    //@ts-ignore
+    const { token } = useAuth();
+
     async function getProducts() {
         try {
             const productResp = await axios.get(
@@ -22,18 +24,10 @@ export default function page() {
             console.log(error);
         }
     }
-    useEffect(() => {
-        setToken(localStorage.getItem("token"));
-    }, []);
 
     useEffect(() => {
-        if (!token) {
-            router.push("/");
-        }
-    });
-    useEffect(() => {
         getProducts();
-    });
+    }, []);
 
     return (
         <div className="my-8">

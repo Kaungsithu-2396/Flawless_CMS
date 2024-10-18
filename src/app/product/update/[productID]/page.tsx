@@ -1,6 +1,7 @@
 "use client";
 
 import UpdateProduct from "@/components/UpdateProduct";
+import { useAuth } from "../../../../../context/AuthContext";
 export default function page({
     params: { productID },
 }: {
@@ -8,12 +9,12 @@ export default function page({
         productID: string;
     };
 }) {
-    const token = localStorage.getItem("token");
+    const { token } = useAuth();
     // const cookie = cookies();
     // const token: string | undefined = cookie.get("token")?.value;
     return (
         <>
-            <UpdateProduct productID={productID} token={token} />
+            <UpdateProduct productID={productID} token={token && token} />
         </>
     );
 }

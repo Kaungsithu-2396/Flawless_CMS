@@ -2,21 +2,16 @@
 import UploadProduct from "@/components/UploadProduct";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../../context/AuthContext";
 export default function page() {
-    const [token, setToken] = useState<string | null>("");
+    //@ts-ignore
+    const { token } = useAuth();
+    console.log(token);
     const router = useRouter();
-    useEffect(() => {
-        setToken(localStorage.getItem("token"));
-    }, []);
-    useEffect(() => {
-        if (!token) {
-            router.push("/");
-        }
-    }, []);
 
     return (
         <>
-            <UploadProduct token={token} />
+            <UploadProduct token={token && token} />
         </>
     );
 }
