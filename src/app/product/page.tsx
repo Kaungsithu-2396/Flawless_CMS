@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 export default function page() {
     const [data, setData] = useState([]);
+    const [token, setToken] = useState<string | null>("");
     const router = useRouter();
     async function getProducts() {
         try {
@@ -21,7 +22,10 @@ export default function page() {
             console.log(error);
         }
     }
-    const token = localStorage.getItem("token");
+    useEffect(() => {
+        setToken(localStorage.getItem("token"));
+    }, []);
+
     useEffect(() => {
         if (!token) {
             router.push("/");

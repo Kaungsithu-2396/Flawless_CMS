@@ -10,6 +10,7 @@ import { cookies } from "next/headers";
 import { useEffect, useState } from "react";
 export default function page() {
     const [data, setData] = useState([]);
+    const [token, setToken] = useState<string | null>("");
     const router = useRouter();
     async function getCategory() {
         try {
@@ -22,14 +23,17 @@ export default function page() {
         }
     }
     useEffect(() => {
+        setToken(localStorage.getItem("token"));
+    }, []);
+    useEffect(() => {
         getCategory();
-    });
-    const token = localStorage.getItem("token");
+    }, []);
+
     useEffect(() => {
         if (!token) {
             router.push("/");
         }
-    });
+    }, []);
     return (
         <section className="mx-4 ">
             <div className=" flex justify-between">
