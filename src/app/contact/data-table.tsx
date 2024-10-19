@@ -23,17 +23,22 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    token: string | null;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    token,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
     const table = useReactTable({
         data,
         columns,
+        meta: {
+            token,
+        },
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,

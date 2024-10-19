@@ -6,13 +6,17 @@ import { useRouter } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
 import { DataTable } from "./data-table";
 import axios from "axios";
-import { cookies } from "next/headers";
+
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
 export default function page() {
     const [data, setData] = useState([]);
-    const { token } = useAuth();
-    const router = useRouter();
+    const [currentToken, setCurrentToken] = useState<string | null>("");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setCurrentToken(localStorage.getItem("token"));
+        }
+    }, [currentToken]);
+
     async function getCategory() {
         try {
             const resp = await axios.get(
@@ -43,7 +47,11 @@ export default function page() {
                     </Button>
                 </Link>
             </div>
-            <DataTable columns={columns} data={data} token={token && token} />
+            {!currentToken ? (
+                <h1>Loading ...</h1>
+            ) : (
+                <DataTable columns={columns} data={data} token={currentToken} />
+            )}
         </section>
     );
 }

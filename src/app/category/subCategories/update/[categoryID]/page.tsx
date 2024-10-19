@@ -16,11 +16,7 @@ export default function page({
     // const token = cookie.get("token")?.value;
     const router = useRouter();
     const { token } = useAuth();
-    useEffect(() => {
-        if (!token) {
-            router.push("/");
-        }
-    }, []);
+
     return (
         <>
             <UpdateSubCategory categoryID={categoryID} token={token && token} />

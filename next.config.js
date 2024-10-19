@@ -9,7 +9,7 @@ module.exports = {
                 port: "3000",
             },
             {
-                protocol: "http",
+                protocol: "https",
                 hostname: "res.cloudinary.com",
             },
         ],

@@ -5,12 +5,21 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../../../context/AuthContext";
 // import { cookies } from "next/headers";
 export default function page() {
-    const { token } = useAuth();
+    const [currentToken, setCurrentToken] = useState<string | null>("");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setCurrentToken(localStorage.getItem("token"));
+        }
+    }, [currentToken]);
     const router = useRouter();
 
     return (
         <>
-            <UploadCategory token={token && token} />
+            {!currentToken ? (
+                <h1>Loading..</h1>
+            ) : (
+                <UploadCategory token={currentToken} />
+            )}
         </>
     );
 }

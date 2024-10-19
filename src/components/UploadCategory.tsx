@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import axios from "axios";
 import { redirect } from "next/navigation";
-export default function UploadCategory({ token }: { token: string | null }) {
+export default function UploadCategory({
+    token,
+}: {
+    token: string | null;
+}) {
     const [category, setCategory] = useState<string>();
     const [itemImage, setItemImage] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 interface AuthContextType {
     token: string | null; // or any type you expect
     setToken: React.Dispatch<React.SetStateAction<string | null>>;
+    loading:boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
+            setLoading(true);
             // Check if running in the client
             const storedToken = localStorage.getItem("token");
             if (storedToken) {
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [loading, token, router]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken }}>
+        <AuthContext.Provider value={{ token, setToken, loading }}>
             {children}
             {/* Render children only when loading is complete */}
         </AuthContext.Provider>

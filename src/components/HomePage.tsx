@@ -41,7 +41,7 @@ export default function HomePage({ token }: { token: string | undefined }) {
                     },
                 }
             );
-            console.log(res);
+            console.log(res, "home page resp");
             alert("upload success");
             setPreview("");
         } catch (error) {

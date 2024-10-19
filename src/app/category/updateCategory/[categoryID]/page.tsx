@@ -8,10 +8,14 @@ type props = {
     };
 };
 export default function page({ params: { categoryID } }: props) {
-    const { token } = useAuth();
+    const { token, loading } = useAuth();
     return (
         <>
-            <UpdateCategory categoryID={categoryID} token={token && token} />
+            {loading ? (
+                <h1>loading...</h1>
+            ) : (
+                <UpdateCategory categoryID={categoryID} token={token} />
+            )}
         </>
     );
 }

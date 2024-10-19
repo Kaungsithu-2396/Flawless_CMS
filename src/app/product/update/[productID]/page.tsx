@@ -1,5 +1,5 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import UpdateProduct from "@/components/UpdateProduct";
 import { useAuth } from "../../../../../context/AuthContext";
 export default function page({
@@ -9,12 +9,21 @@ export default function page({
         productID: string;
     };
 }) {
-    const { token } = useAuth();
+    const [currentToken, setCurrentToken] = useState<string | null>("");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setCurrentToken(localStorage.getItem("token"));
+        }
+    }, [currentToken]);
     // const cookie = cookies();
     // const token: string | undefined = cookie.get("token")?.value;
     return (
         <>
-            <UpdateProduct productID={productID} token={token && token} />
+            {!currentToken ? (
+                <h1>Loading...</h1>
+            ) : (
+                <UpdateProduct productID={productID} token={currentToken} />
+            )}
         </>
     );
 }

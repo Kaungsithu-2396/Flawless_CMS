@@ -1,6 +1,6 @@
 "use client";
 import UploadSubCategory from "@/components/UploadSubCategory";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 // import { cookies } from "next/headers";
 export default function page({
@@ -12,16 +12,23 @@ export default function page({
 }) {
     // const cookie = cookies();
     // const token = cookie.get("token")?.value;
-    const router = useRouter();
-    const token = localStorage.getItem("token");
+    const [currentToken, setCurrentToken] = useState<string | null>("");
     useEffect(() => {
-        if (!token) {
-            router.push("/");
+        if (typeof window !== "undefined") {
+            setCurrentToken(localStorage.getItem("token"));
         }
-    }, []);
+    }, [currentToken]);
+
     return (
         <>
-            <UploadSubCategory categoryID={categoryId} token={token} />
+            {!currentToken ? (
+                <h1>Loading...</h1>
+            ) : (
+                <UploadSubCategory
+                    categoryID={categoryId}
+                    token={currentToken}
+                />
+            )}
         </>
     );
 }

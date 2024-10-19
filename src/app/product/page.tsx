@@ -5,14 +5,15 @@ import { FaPlus } from "react-icons/fa";
 import { DataTable } from "./data-table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
 import axios from "axios";
-import { useAuth } from "../../../context/AuthContext";
 export default function page() {
     const [data, setData] = useState([]);
-    //@ts-ignore
-    const { token } = useAuth();
+    const [currentToken, setCurrentToken] = useState<string | null>("");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setCurrentToken(localStorage.getItem("token"));
+        }
+    }, [currentToken]);
 
     async function getProducts() {
         try {
@@ -41,8 +42,11 @@ export default function page() {
                     Upload Product
                 </Button>
             </Link>
-
-            <DataTable columns={columns} data={data} token={token} />
+            {!currentToken ? (
+                <h1>Loading ...</h1>
+            ) : (
+                <DataTable columns={columns} data={data} token={currentToken} />
+            )}
         </div>
     );
 }
