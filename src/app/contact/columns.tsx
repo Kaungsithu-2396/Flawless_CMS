@@ -35,7 +35,7 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const {
                 original: { _id },
             } = row;

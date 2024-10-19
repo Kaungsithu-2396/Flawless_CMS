@@ -11,7 +11,6 @@ import { useAuth } from "../../../context/AuthContext";
 export default function Home() {
     const router = useRouter();
     //@ts-ignore
-    const { token } = useAuth();
 
     const [data, setData] = useState([]);
     async function getAllOrders() {

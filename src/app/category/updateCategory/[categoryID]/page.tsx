@@ -1,21 +1,15 @@
-"use client";
 import UpdateCategory from "@/components/UpdateCategory";
-
-import { useAuth } from "../../../../../context/AuthContext";
+import { getToken } from "@/lib/cookie";
 type props = {
     params: {
         categoryID: string;
     };
 };
-export default function page({ params: { categoryID } }: props) {
-    const { token, loading } = useAuth();
+export default async function page({ params: { categoryID } }: props) {
+    const token = await getToken();
     return (
         <>
-            {loading ? (
-                <h1>loading...</h1>
-            ) : (
-                <UpdateCategory categoryID={categoryID} token={token} />
-            )}
+            <UpdateCategory categoryID={categoryID} token={token} />
         </>
     );
 }

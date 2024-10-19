@@ -1,34 +1,26 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import { Order, columns } from "./columns";
 import { FaPlus } from "react-icons/fa";
+
 import { DataTable } from "./data-table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import axios from "axios";
-export default function page() {
-    const [data, setData] = useState([]);
-    const [currentToken, setCurrentToken] = useState<string | null>("");
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            setCurrentToken(localStorage.getItem("token"));
-        }
-    }, [currentToken]);
+import { getToken } from "../utils/cookie";
+export default async function page() {
+    const token = await getToken();
 
     async function getProducts() {
         try {
             const productResp = await axios.get(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/product`
             );
-            setData(productResp.data.data);
+            return productResp.data.data;
         } catch (error) {
             console.log(error);
         }
     }
-
-    useEffect(() => {
-        getProducts();
-    }, []);
+    const data = await getProducts();
 
     return (
         <div className="my-8">
@@ -42,11 +34,7 @@ export default function page() {
                     Upload Product
                 </Button>
             </Link>
-            {!currentToken ? (
-                <h1>Loading ...</h1>
-            ) : (
-                <DataTable columns={columns} data={data} token={currentToken} />
-            )}
+            <DataTable columns={columns} data={data} token={token?.value} />
         </div>
     );
 }

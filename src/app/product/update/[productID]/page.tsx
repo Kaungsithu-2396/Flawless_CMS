@@ -1,29 +1,16 @@
-"use client";
-import { useState, useEffect } from "react";
 import UpdateProduct from "@/components/UpdateProduct";
-import { useAuth } from "../../../../../context/AuthContext";
-export default function page({
+import { getToken } from "@/lib/cookie";
+export default async function page({
     params: { productID },
 }: {
     params: {
         productID: string;
     };
 }) {
-    const [currentToken, setCurrentToken] = useState<string | null>("");
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            setCurrentToken(localStorage.getItem("token"));
-        }
-    }, [currentToken]);
-    // const cookie = cookies();
-    // const token: string | undefined = cookie.get("token")?.value;
+    const token = await getToken();
     return (
         <>
-            {!currentToken ? (
-                <h1>Loading...</h1>
-            ) : (
-                <UpdateProduct productID={productID} token={currentToken} />
-            )}
+            <UpdateProduct productID={productID} token={token} />
         </>
     );
 }

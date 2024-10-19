@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { poppins } from "./ui/font";
 import "./globals.css";
 import Nav from "@/components/Nav";
-import { AuthProvider } from "../../context/AuthContext";
 
 export const metadata: Metadata = {
     title: "CMS- Flawless",
@@ -17,10 +16,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={` ${poppins.className} antialiased`}>
-                <AuthProvider>
-                    <Nav />
-                    {children}
-                </AuthProvider>
+                <Nav />
+                {children}
             </body>
         </html>
     );

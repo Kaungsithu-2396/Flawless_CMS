@@ -1,15 +1,22 @@
 import React from "react";
 import Link from "next/link";
 import axios from "axios";
+import { getToken } from "@/lib/cookie";
 export default async function page({
     params: { orderID },
 }: {
     params: { orderID: string };
 }) {
+    const token = await getToken();
     async function getOrderDetail() {
         try {
             const resp = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order/${orderID}`
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order/${orderID}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
             );
             return resp.data.data;
         } catch (error) {

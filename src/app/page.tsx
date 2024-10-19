@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { setToken } from "@/lib/cookie";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -28,8 +29,7 @@ export default function page() {
                     withCredentials: true,
                 }
             );
-
-            localStorage.setItem("token", resp.data.token);
+            await setToken(resp.data.token);
             router.push("/dashboard");
         } catch (error: any) {
             console.log(error);

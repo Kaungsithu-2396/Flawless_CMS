@@ -1,11 +1,7 @@
-"use client";
 import UpdateSubCategory from "@/components/UpdateSubCategory";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "../../../../../../context/AuthContext";
-// import { cookies } from "next/headers";
+import { getToken } from "@/lib/cookie";
 
-export default function page({
+export default async function page({
     params: { categoryID },
 }: {
     params: {
@@ -14,12 +10,11 @@ export default function page({
 }) {
     // const cookie = cookies();
     // const token = cookie.get("token")?.value;
-    const router = useRouter();
-    const { token } = useAuth();
+    const token = await getToken();
 
     return (
         <>
-            <UpdateSubCategory categoryID={categoryID} token={token && token} />
+            <UpdateSubCategory categoryID={categoryID} token={token} />
         </>
     );
 }

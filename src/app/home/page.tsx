@@ -1,11 +1,10 @@
 import HomePage from "@/components/HomePage";
-import { cookies } from "next/headers";
-export default function page() {
-    const cookie = cookies();
-    const token: string | undefined = cookie.get("token")?.value;
+import { getToken } from "../utils/cookie";
+export default async function page() {
+    const token = await getToken();
     return (
         <>
-            <HomePage token={token} />
+            <HomePage token={token?.value} />
         </>
     );
 }

@@ -1,25 +1,10 @@
-"use client";
 import UploadCategory from "@/components/UploadCategory";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "../../../../context/AuthContext";
-// import { cookies } from "next/headers";
-export default function page() {
-    const [currentToken, setCurrentToken] = useState<string | null>("");
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            setCurrentToken(localStorage.getItem("token"));
-        }
-    }, [currentToken]);
-    const router = useRouter();
-
+import { getToken } from "@/lib/cookie";
+export default async function page() {
+    const token = await getToken();
     return (
         <>
-            {!currentToken ? (
-                <h1>Loading..</h1>
-            ) : (
-                <UploadCategory token={currentToken} />
-            )}
+            <UploadCategory token={token} />
         </>
     );
 }
