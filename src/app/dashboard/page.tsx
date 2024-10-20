@@ -1,31 +1,21 @@
-"use client";
 import Link from "next/link";
 import { Order, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { HiBellAlert } from "react-icons/hi2";
-import { useRouter } from "next/navigation";
-import { cookies } from "next/headers";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
-export default function Home() {
-    const router = useRouter();
-    //@ts-ignore
 
-    const [data, setData] = useState([]);
+export default async function Home() {
     async function getAllOrders() {
         try {
             const resp = await axios.get(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/order`
             );
-            setData(resp.data.data);
+            return resp.data.data;
         } catch (error) {
             console.log(error);
         }
     }
-    useEffect(() => {
-        getAllOrders();
-    }, []);
+    const data = await getAllOrders();
     return (
         <section className=" m-7 md:mt-7  md:w-2/3 md:m-auto flex flex-col  gap-6">
             <div className="flex lg:flex-row flex-col justify-between items-center gap-5 ">
