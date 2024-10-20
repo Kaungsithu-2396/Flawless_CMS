@@ -21,6 +21,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
     const [dropDownValue, setDropDownValue] = useState<string>("");
     const [preview, setPreview] = useState<FileList | null>();
     const [categoryData, setCategoryData] = useState<any>();
+    const [productImages, setProductImages] = useState([]);
     const [subCategoryData, setsubCategoryData] = useState<any>();
     const [subCategory, setsubCategory] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
@@ -51,13 +52,13 @@ export default function UploadProduct({ token }: { token: string | null }) {
         getAllCategories();
         getAllSubCategories();
     }, []);
-    const transformFiles = (files: FileList) => {
-        const fileArray = Array.from(files); // Convert FileList to an array
-        fileArray.forEach((file) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-        });
-    };
+    // const transformFiles = (files: FileList) => {
+    //     const fileArray = Array.from(files); // Convert FileList to an array
+    //     fileArray.forEach((file) => {
+    //         const reader = new FileReader();
+    //         reader.readAsDataURL(file);
+    //     });
+    // };
     const data = categoryData || [];
     const dropDownHandler = async (value: string) => {
         setDropDownValue(value);
@@ -102,9 +103,8 @@ export default function UploadProduct({ token }: { token: string | null }) {
         formData.append("stock", String(stock));
         formData.append("category", category);
         formData.append("subCategory", selectedSubCategory);
-        alert(Array.from(productImage).length);
         setLoading(true);
-
+        console.log(alert(preview?.length));
         //compress image size
         const compressorPromises = Array.from(productImage).map(
             (image) =>
@@ -337,15 +337,15 @@ export default function UploadProduct({ token }: { token: string | null }) {
                                 ) => {
                                     //@ts-ignore
                                     const files = Array.from(e.target.files);
-                                    if (files.length > 6) {
-                                        alert("Image count must be under 6");
+                                    if (files.length > 3) {
+                                        alert("Image count must be under 3");
                                         //@ts-ignore
                                         setPreview([]);
                                     } else {
                                         //@ts-ignore
                                         setPreview(files);
-                                        //@ts-ignore
-                                        transformFiles(files);
+                                        // //@ts-ignore
+                                        // transformFiles(e.target.files);
                                     }
                                 }}
                             />
