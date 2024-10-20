@@ -104,9 +104,10 @@ export default function UploadProduct({ token }: { token: string | null }) {
         formData.append("category", category);
         formData.append("subCategory", selectedSubCategory);
         setLoading(true);
-        console.log(alert(preview?.length));
+        // console.log(alert(preview?.length));
         //compress image size
-        const compressorPromises = Array.from(productImage).map(
+        //@ts-ignore
+        const compressorPromises = Array.from(preview)?.map(
             (image) =>
                 new Promise((resolve, reject) => {
                     //@ts-ignore
@@ -142,7 +143,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
                     },
                 }
             );
-            console.log(uploadResp.data.message);
+            console.log(uploadResp);
             alert("upload succes");
         } catch (error) {
             console.log(error);
