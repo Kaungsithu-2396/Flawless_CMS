@@ -1,4 +1,5 @@
 "use client";
+import Compressor from "compressorjs";
 import React from "react";
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
@@ -131,9 +132,30 @@ export default function UpdateProduct({
         formData.append("category", category);
         formData.append("subCategory", subCatData);
         formData.append("publicID", JSON.stringify(publicIDCol));
-        Array.from(productImage).forEach((el) => formData.append("images", el));
 
         setLoading(true);
+        const compressorPromises = Array.from(productImage).map(
+            (image) =>
+                new Promise((resolve, reject) => {
+                    //@ts-ignore
+                    new Compressor(image, {
+                        quality: 0.6,
+                        success: (compressedImg) => {
+                            //@ts-ignore
+                            resolve({ compressedImg, name: image?.name });
+                        },
+                        error: (err) => {
+                            reject(err);
+                        },
+                    });
+                })
+        );
+        const compressedImages = await Promise.all(compressorPromises);
+      
+        //@ts-ignore
+        compressedImages.forEach(({ compressedImg, name }) => {
+            formData.append("images", compressedImg, name);
+        });
         try {
             const updateResp = await axios.patch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/product/${productID}`,

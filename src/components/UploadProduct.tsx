@@ -1,5 +1,5 @@
 "use client";
-
+import Compressor from "compressorjs";
 import { Input } from "@/components/ui/input";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -102,8 +102,34 @@ export default function UploadProduct({ token }: { token: string | null }) {
         formData.append("stock", String(stock));
         formData.append("category", category);
         formData.append("subCategory", selectedSubCategory);
-        Array.from(productImage).forEach((el) => formData.append("images", el));
         setLoading(true);
+
+        //compress image size
+        const compressorPromises = Array.from(productImage).map(
+            (image) =>
+                new Promise((resolve, reject) => {
+                    //@ts-ignore
+                    new Compressor(image, {
+                        quality: 0.6,
+                        success: (compressedImg) => {
+                            //@ts-ignore
+                            resolve({ compressedImg, name: image?.name });
+                        },
+                        error: (err) => {
+                            reject(err);
+                        },
+                    });
+                })
+        );
+
+        const compressedImages = await Promise.all(compressorPromises);
+        console.log(compressedImages, "compressed");
+        console.log(productImage, "images");
+        //@ts-ignore
+        compressedImages.forEach(({ compressedImg, name }) => {
+            formData.append("images", compressedImg, name);
+        });
+
         try {
             const uploadResp = await axios.post(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/product`,
