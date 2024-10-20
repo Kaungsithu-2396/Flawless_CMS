@@ -3,10 +3,8 @@ import React from "react";
 import Image from "next/image";
 import { useState } from "react";
 export default function ProductImage({ images }: { images: string[] }) {
-    console.log(images, "imgs");
     const [img1, img2, img3] = images;
     const [itemUrl, setItemUrl] = useState<any>(img1);
-    console.log(images, "smth");
     const handleImageUrl = (e: any) => {
         setItemUrl({
             url: e.target.src,

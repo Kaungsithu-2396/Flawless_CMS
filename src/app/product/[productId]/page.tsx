@@ -22,7 +22,6 @@ export default function page({
             const productResp = await axios.get(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/product/${productId}`
             );
-            console.log(productResp.data);
 
             setProductData(productResp.data.data);
         } catch (error) {

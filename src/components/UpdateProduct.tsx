@@ -134,7 +134,7 @@ export default function UpdateProduct({
         formData.append("publicID", JSON.stringify(publicIDCol));
 
         setLoading(true);
-        const compressorPromises = Array.from(productImage).map(
+        const compressorPromises = Array.from(preview ? preview : []).map(
             (image) =>
                 new Promise((resolve, reject) => {
                     //@ts-ignore

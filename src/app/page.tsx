@@ -32,7 +32,6 @@ export default function page() {
             await setToken(resp.data.token);
             router.push("/dashboard");
         } catch (error: any) {
-            alert(error);
             setError(error.response.data.message);
         } finally {
             setLoading(false);
