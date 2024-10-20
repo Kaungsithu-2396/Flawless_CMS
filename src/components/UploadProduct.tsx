@@ -158,6 +158,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
                     className="flex flex-col xl:flex-row justify-center items-start lg:my-9 xl:my-0 md:gap-5"
                     method="post"
                     onSubmit={handleSubmit(onSubmit)}
+                    encType="multipart/form-data"
                 >
                     <div className=" w-full">
                         <span>

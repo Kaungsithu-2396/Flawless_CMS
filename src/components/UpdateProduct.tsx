@@ -151,7 +151,7 @@ export default function UpdateProduct({
                 })
         );
         const compressedImages = await Promise.all(compressorPromises);
-      
+
         //@ts-ignore
         compressedImages.forEach(({ compressedImg, name }) => {
             formData.append("images", compressedImg, name);
@@ -184,6 +184,7 @@ export default function UpdateProduct({
                     className="flex flex-col xl:flex-row justify-center items-start lg:my-9 xl:my-0 md:gap-5"
                     method="post"
                     onSubmit={handleSubmit(onSubmit)}
+                    encType="multipart/form-data"
                 >
                     <div className=" w-full">
                         <span>
