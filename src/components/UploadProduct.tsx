@@ -92,6 +92,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
         return true;
     };
     const onSubmit: SubmitHandler<productForm> = async (data) => {
+        alert("prdocut upload");
         const { name, description, price, productCode, stock, productImage } =
             data;
         const formData = new FormData();
