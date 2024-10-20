@@ -92,7 +92,6 @@ export default function UploadProduct({ token }: { token: string | null }) {
         return true;
     };
     const onSubmit: SubmitHandler<productForm> = async (data) => {
-        alert("prdocut upload");
         const { name, description, price, productCode, stock, productImage } =
             data;
         const formData = new FormData();
@@ -103,6 +102,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
         formData.append("stock", String(stock));
         formData.append("category", category);
         formData.append("subCategory", selectedSubCategory);
+        alert(Array.from(productImage).length);
         setLoading(true);
 
         //compress image size
