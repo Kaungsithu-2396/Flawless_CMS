@@ -22,12 +22,15 @@ export type Order = {
 
 const handleDelete = async (id: string, token: string) => {
     try {
-        const resp = await axios.delete(`${baseURL}/api/subCategory/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        console.log("what's wrong", resp);
+        const resp = await axios.delete(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/subCategory/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
         alert("delete success");
     } catch (error: any) {
         console.log(error);
