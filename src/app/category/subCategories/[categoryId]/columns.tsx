@@ -24,7 +24,7 @@ const handleDelete = async (id: string, token: string) => {
     try {
         await axios.delete(`${baseURL}/api/subCategory/${id}`, {
             headers: {
-                Authorization: ` Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         });
         alert("delete success");

@@ -36,7 +36,7 @@ const handleDelete = async (id: string, token: string) => {
                 Authorization: ` Bearer ${token}`,
             },
         });
-        console.log(resp);
+
         alert("delete success");
     } catch (error: any) {
         alert(error?.response?.data?.message);

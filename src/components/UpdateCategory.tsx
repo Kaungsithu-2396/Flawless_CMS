@@ -59,7 +59,7 @@ export default function UpdateCategory({
                 {
                     name: category,
                     image: itemImage || "",
-                    publicID: categoryImage.publicId,
+                    publicID: categoryImage.publicID,
                 },
                 {
                     headers: {
