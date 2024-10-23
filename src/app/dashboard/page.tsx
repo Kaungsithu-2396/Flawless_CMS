@@ -1,29 +1,31 @@
+"use client";
 import Link from "next/link";
 import { Order, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { HiBellAlert } from "react-icons/hi2";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
+export default function page() {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
     async function getAllOrders() {
+        setLoading(true);
         try {
             const resp = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order`,
-                {
-                    headers: {
-                        "Cache-Control": "no-cache",
-                        Pragma: "no-cache",
-                        Expires: "0",
-                    },
-                }
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order`
             );
-            return resp.data.data;
+            setData(resp.data.data);
         } catch (error) {
             console.log(error);
+            setLoading(false);
+        } finally {
+            setLoading(false);
         }
     }
-    const data = await getAllOrders();
-    console.log(data.length);
+    useEffect(() => {
+        getAllOrders();
+    }, []);
     return (
         <section className=" m-7 md:mt-7  md:w-2/3 md:m-auto flex flex-col  gap-6">
             <div className="flex lg:flex-row flex-col justify-between items-center gap-5 ">
@@ -119,8 +121,11 @@ export default async function Home() {
                 </Link>
             </div>
             <div className=" m-4 font-bold text-xl">Order Detail</div>
-
-            <DataTable columns={columns} data={data} />
+            {loading ? (
+                <h1>Loading...</h1>
+            ) : (
+                <DataTable columns={columns} data={data} />
+            )}
         </section>
     );
 }
