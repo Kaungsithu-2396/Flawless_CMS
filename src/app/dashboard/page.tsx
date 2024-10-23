@@ -8,7 +8,14 @@ export default async function Home() {
     async function getAllOrders() {
         try {
             const resp = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order`
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/order`,
+                {
+                    headers: {
+                        "Cache-Control": "no-cache",
+                        Pragma: "no-cache",
+                        Expires: "0",
+                    },
+                }
             );
             return resp.data.data;
         } catch (error) {
@@ -16,6 +23,7 @@ export default async function Home() {
         }
     }
     const data = await getAllOrders();
+    console.log(data.length);
     return (
         <section className=" m-7 md:mt-7  md:w-2/3 md:m-auto flex flex-col  gap-6">
             <div className="flex lg:flex-row flex-col justify-between items-center gap-5 ">
