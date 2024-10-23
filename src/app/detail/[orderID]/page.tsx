@@ -29,13 +29,13 @@ export default async function page({
         phone,
         address,
         zipCode,
-        InstallmentPlan,
+        installmentPlan,
         lineId,
         order,
         message,
     } = await getOrderDetail();
     const orderItem = order.map((el: any) => el.price * el.count);
-
+    
     const total = orderItem.reduce((acc: any, val: any) => {
         return acc + val;
     }, 0);
@@ -76,7 +76,7 @@ export default async function page({
                             <p className=" my-9">{email}</p>
                             <p className=" my-9">{phone}</p>
                             <p className=" my-9">
-                                {InstallmentPlan ? "yes" : "no"}
+                                {installmentPlan ? "yes" : "no"}
                             </p>
 
                             <p className=" my-9">{zipCode}</p>

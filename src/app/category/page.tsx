@@ -11,7 +11,12 @@ export default async function page() {
     async function getCategory() {
         try {
             const resp = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/category`
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/category`,
+                {
+                    headers: {
+                        "Cache-Control": "no store",
+                    },
+                }
             );
             return resp.data.data;
         } catch (error) {
