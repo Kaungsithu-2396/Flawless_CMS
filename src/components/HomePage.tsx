@@ -10,17 +10,7 @@ export default function HomePage({ token }: { token: string | undefined }) {
     const [itemImage, setItemImage] = useState<any>();
     const [errorMsg, setErrorMsg] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
-    const transformFile = (file: any) => {
-        const reader = new FileReader();
-        if (file) {
-            reader.readAsDataURL(file);
-            reader.onloadend = () => {
-                setItemImage(reader.result);
-            };
-        } else {
-            setItemImage("");
-        }
-    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!preview) {
@@ -28,16 +18,18 @@ export default function HomePage({ token }: { token: string | undefined }) {
         } else {
             setErrorMsg("");
         }
+        console.log(itemImage);
+        const formData = new FormData();
+        formData.append("image", itemImage);
         setLoading(true);
         try {
             const res = await axios.post(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/home`,
-                {
-                    image: itemImage,
-                },
+                formData,
                 {
                     headers: {
                         Authorization: ` Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
                     },
                 }
             );
@@ -65,9 +57,17 @@ export default function HomePage({ token }: { token: string | undefined }) {
                         type="file"
                         onChange={(e) => {
                             const file = e.target.files?.[0];
+                            if (!file) return;
+                            const fileSize = Math.floor(
+                                file.size / (1024 * 1024)
+                            );
+                            if (fileSize >= 8) {
+                                setErrorMsg("file size must be under 8 Mb");
+                                return;
+                            }
                             //@ts-ignore
                             setPreview(file);
-                            transformFile(file);
+                            setItemImage(file);
                             setErrorMsg("");
                         }}
                     />

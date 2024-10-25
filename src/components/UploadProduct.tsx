@@ -18,6 +18,7 @@ import { productForm } from "../../types";
 import axios from "axios";
 
 export default function UploadProduct({ token }: { token: string | null }) {
+    const maxFileSize = 19;
     const [dropDownValue, setDropDownValue] = useState<string>("");
     const [preview, setPreview] = useState<FileList | null>();
     const [categoryData, setCategoryData] = useState<any>();
@@ -125,8 +126,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
         );
 
         const compressedImages = await Promise.all(compressorPromises);
-        console.log(compressedImages, "compressed");
-        console.log(productImage, "images");
+
         //@ts-ignore
         compressedImages.forEach(({ compressedImg, name }) => {
             formData.append("images", compressedImg, name);
@@ -338,8 +338,25 @@ export default function UploadProduct({ token }: { token: string | null }) {
                                 ) => {
                                     //@ts-ignore
                                     const files = Array.from(e.target.files);
+                                    const fileSize = files
+                                        .map((el) => el.size)
+                                        .reduce((acc, el) => acc + el, 0);
+                                    const size = Math.ceil(
+                                        fileSize / (1024 * 1024)
+                                    );
+
                                     if (files.length > 3) {
                                         alert("Image count must be under 3");
+                                        //@ts-ignore
+                                        setPreview([]);
+                                    } else if (files.length < 2) {
+                                        alert("image must be at least 2");
+                                        //@ts-ignore
+                                        setPreview([]);
+                                    } else if (size >= maxFileSize) {
+                                        alert(
+                                            `image size must be under ${maxFileSize} MB`
+                                        );
                                         //@ts-ignore
                                         setPreview([]);
                                     } else {

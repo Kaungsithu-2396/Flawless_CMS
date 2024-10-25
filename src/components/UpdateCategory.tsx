@@ -13,8 +13,10 @@ export default function UpdateCategory({
     token: string | null;
 }) {
     const [data, setData] = useState<any>({});
+    const [prevImage, setPrevImage] = useState<any>("");
     const [itemImage, setItemImage] = useState<any>("");
     const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState("");
     async function getImageURL() {
         try {
             const resp = await axios.get(
@@ -34,36 +36,46 @@ export default function UpdateCategory({
         getImageURL();
     }, []);
     const { name, categoryImage } = data;
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+        if (!file) return;
+        if (Math.floor(file.size / (1024 * 1024)) >= 6) {
+            setError("Photo must be under 6 MB");
+            return;
+        } else {
+            setError("");
+        }
         transformFile(file);
+        setItemImage(file);
     };
     const transformFile = (file: any) => {
         const reader = new FileReader();
         if (file) {
             reader.readAsDataURL(file);
             reader.onloadend = () => {
-                setItemImage(reader.result);
+                setPrevImage(reader.result);
             };
         } else {
-            setItemImage("");
+            setPrevImage("");
         }
     };
     const [category, setCategory] = useState("");
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append("name", category);
+        formData.append("image", itemImage);
+        formData.append("publicID", categoryImage.public_id);
         setLoading(true);
         try {
             const res = await axios.patch(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/api/category/${categoryID}`,
-                {
-                    name: category,
-                    image: itemImage || "",
-                    publicID: categoryImage.publicID,
-                },
+                formData,
                 {
                     headers: {
                         Authorization: ` Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
                     },
                 }
             );
@@ -76,6 +88,7 @@ export default function UpdateCategory({
     };
     return (
         <div>
+            <p className="text-red-400">{error}</p>
             <form className="mx-4 " onSubmit={handleSubmit}>
                 <h1 className="font-bold my-4">Update Category</h1>
                 <Input
@@ -97,7 +110,7 @@ export default function UpdateCategory({
                     />
                 ) : (
                     <Image
-                        src={itemImage}
+                        src={prevImage}
                         width={300}
                         height={300}
                         alt="product image"

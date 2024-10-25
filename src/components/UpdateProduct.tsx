@@ -24,7 +24,7 @@ export default function UpdateProduct({
     token: string | null;
 }) {
     const [dropDownValue, setDropDownValue] = useState<string>("");
-    const [preview, setPreview] = useState<FileList | null>();
+    const [preview, setPreview] = useState<any>([]);
     const [categoryData, setCategoryData] = useState<any>();
     const [subCategoryData, setsubCategoryData] = useState<any>();
     const [subCategory, setsubCategory] = useState([]);
@@ -107,17 +107,8 @@ export default function UpdateProduct({
         formState: { errors },
         setError,
     } = useForm<productForm>();
-    const maxFiles = 3;
-    const validateFiles = (files: any) => {
-        if (files.length > maxFiles) {
-            setError("productImage", {
-                type: "manual",
-                message: `You can upload a maximum of ${maxFiles} images.`,
-            });
-            return false;
-        }
-        return true;
-    };
+    const maxFileSize = 19;
+
     const onSubmit: SubmitHandler<productForm> = async (data) => {
         const publicIDCol = prevDataImage.map((el: any) => el.publicID);
         const { name, description, price, productCode, stock, productImage } =
@@ -305,9 +296,7 @@ export default function UpdateProduct({
                             <label htmlFor="">Product Image</label>
                             <br />
                             <Input
-                                {...register("productImage", {
-                                    validate: (files) => validateFiles(files),
-                                })}
+                                {...register("productImage")}
                                 className="my-3"
                                 type="file"
                                 multiple
@@ -316,8 +305,24 @@ export default function UpdateProduct({
                                 ) => {
                                     //@ts-ignore
                                     const files = Array.from(e.target.files);
+                                    const fileSize = files
+                                        .map((el) => el.size)
+                                        .reduce((acc, el) => acc + el, 0);
+                                    const size = Math.ceil(
+                                        fileSize / (1024 * 1024)
+                                    );
                                     if (files.length > 3) {
                                         alert("Image count must be under 3");
+                                        //@ts-ignore
+                                        setPreview([]);
+                                    } else if (files.length < 2) {
+                                        alert("image must be at least 2");
+                                        //@ts-ignore
+                                        setPreview([]);
+                                    } else if (size >= maxFileSize) {
+                                        alert(
+                                            `image size must be under ${maxFileSize} MB`
+                                        );
                                         //@ts-ignore
                                         setPreview([]);
                                     } else {
@@ -357,7 +362,8 @@ export default function UpdateProduct({
                                           />
                                       );
                                   })} */}
-                            {preview
+
+                            {!preview || preview?.length !== 0
                                 ? fileListsArray?.map((el: any) => {
                                       return (
                                           <img
