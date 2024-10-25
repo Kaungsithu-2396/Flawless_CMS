@@ -61,8 +61,8 @@ export default function HomePage({ token }: { token: string | undefined }) {
                             const fileSize = Math.floor(
                                 file.size / (1024 * 1024)
                             );
-                            if (fileSize >= 8) {
-                                setErrorMsg("file size must be under 8 Mb");
+                            if (fileSize >= 6) {
+                                setErrorMsg("file size must be under 6 Mb");
                                 return;
                             }
                             //@ts-ignore
