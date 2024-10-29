@@ -67,6 +67,7 @@ export default function UpdateCategory({
         formData.append("name", category);
         formData.append("image", itemImage);
         formData.append("publicID", categoryImage.public_id);
+
         setLoading(true);
         try {
             const res = await axios.patch(

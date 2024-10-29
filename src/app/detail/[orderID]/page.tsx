@@ -35,7 +35,7 @@ export default async function page({
         message,
     } = await getOrderDetail();
     const orderItem = order.map((el: any) => el.price * el.count);
-    
+
     const total = orderItem.reduce((acc: any, val: any) => {
         return acc + val;
     }, 0);
@@ -99,7 +99,6 @@ export default async function page({
                             </p>
                             <p className=" my-9  md:w-full   overflow-scroll">
                                 {address}
-                                {zipCode}
                             </p>
                         </div>
                     </div>

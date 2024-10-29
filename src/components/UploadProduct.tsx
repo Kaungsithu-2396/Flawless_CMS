@@ -27,6 +27,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
     const [subCategory, setsubCategory] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
     const [category, setcategory] = useState<string>("");
+    const [errorMsg, setErrorMsg] = useState("");
 
     const [loading, setLoading] = useState<boolean>(false);
     async function getAllCategories() {
@@ -82,12 +83,13 @@ export default function UploadProduct({ token }: { token: string | null }) {
         formState: { errors },
         setError,
     } = useForm<productForm>();
-    const maxFiles = 3;
+    console.log(errors);
     const validateFiles = (files: any) => {
-        if (files.length > maxFiles) {
+        console.log(files.length);
+        if (files.length === 0) {
             setError("productImage", {
                 type: "manual",
-                message: `You can upload a maximum of ${maxFiles} images.`,
+                message: `please provide image`,
             });
             return false;
         }
@@ -143,10 +145,10 @@ export default function UploadProduct({ token }: { token: string | null }) {
                     },
                 }
             );
-            console.log(uploadResp);
+
             alert("upload succes");
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            setErrorMsg(error?.response?.data.message);
         } finally {
             setLoading(false);
         }
@@ -155,6 +157,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
         <>
             <section className="mx-8">
                 <h2 className="my-4 font-bold">Add Product</h2>
+                <span className="text-red-500">{errorMsg}</span>
                 <form
                     action=""
                     className="flex flex-col xl:flex-row justify-center items-start lg:my-9 xl:my-0 md:gap-5"
@@ -326,8 +329,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
                             <br />
                             <Input
                                 {...register("productImage", {
-                                    required:
-                                        "please provide the product images",
+                                    required: "please select file",
                                     validate: (files) => validateFiles(files),
                                 })}
                                 className="my-3"

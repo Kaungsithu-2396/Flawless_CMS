@@ -21,7 +21,7 @@ export default async function page() {
         }
     }
     const data = await getProducts();
-    console.log(data.length);
+
     return (
         <div className="my-8">
             <Link href="/product/upload">
