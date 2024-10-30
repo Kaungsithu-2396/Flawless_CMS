@@ -84,17 +84,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
         setError,
     } = useForm<productForm>();
     console.log(errors);
-    const validateFiles = (files: any) => {
-        console.log(files.length);
-        if (files.length === 0) {
-            setError("productImage", {
-                type: "manual",
-                message: `please provide image`,
-            });
-            return false;
-        }
-        return true;
-    };
+
     const onSubmit: SubmitHandler<productForm> = async (data) => {
         const { name, description, price, productCode, stock, productImage } =
             data;
@@ -330,7 +320,7 @@ export default function UploadProduct({ token }: { token: string | null }) {
                             <Input
                                 {...register("productImage", {
                                     required: "please select file",
-                                    validate: (files) => validateFiles(files),
+                                    // validate: (files) => validateFiles(files),
                                 })}
                                 className="my-3"
                                 type="file"
